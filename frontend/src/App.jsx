@@ -22,13 +22,16 @@ export default function App() {
           <Navbar />
           <main className="flex-1">
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/chat" element={<Chat />} />
-              <Route path="/symptoms" element={<SymptomChecker />} />
-              <Route path="/appointment" element={<Appointment />} />
-              <Route path="/nearby" element={<NearbyFacilities />} />
+              {/* Public */}
+              <Route path="/"     element={<Home />} />
               <Route path="/auth" element={<AuthPage />} />
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+
+              {/* Protected — require login + verified email */}
+              <Route path="/chat"        element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+              <Route path="/symptoms"    element={<ProtectedRoute><SymptomChecker /></ProtectedRoute>} />
+              <Route path="/appointment" element={<ProtectedRoute><Appointment /></ProtectedRoute>} />
+              <Route path="/nearby"      element={<ProtectedRoute><NearbyFacilities /></ProtectedRoute>} />
+              <Route path="/dashboard"   element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             </Routes>
           </main>
           <Footer />

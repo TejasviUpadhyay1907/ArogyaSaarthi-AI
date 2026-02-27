@@ -20,6 +20,10 @@ ai_engine/.env
 frontend/.env
 backend/.env
 
+# Firebase service account (contains private key — never commit)
+backend/firebase-service-account.json
+*service-account*.json
+
 # SQLite WAL/SHM temp files
 *.db-shm
 *.db-wal

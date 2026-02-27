@@ -10,7 +10,7 @@ const LANG_OPTIONS = [
   { code: 'te', flag: '🇮🇳', label: 'తెలుగు' },
 ]
 
-export default function MobileMenu({ navLinks, onClose }) {
+export default function MobileMenu({ navLinks, onClose, onProtectedClick }) {
   const { lang, setLang, t } = useLang()
   const { user, profile, logout } = useAuth()
 
@@ -18,11 +18,7 @@ export default function MobileMenu({ navLinks, onClose }) {
   const initials    = displayName.trim()[0]?.toUpperCase() ?? '?'
 
   return (
-    <div
-      className="lg:hidden bg-white border-t border-gray-100 shadow-xl animate-slide-in-up"
-      role="dialog"
-      aria-label="Navigation menu"
-    >
+    <div className="md:hidden bg-white border-t border-gray-100 shadow-xl" role="dialog" aria-label="Navigation menu">
       <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
 
         {/* Nav links */}
@@ -31,7 +27,11 @@ export default function MobileMenu({ navLinks, onClose }) {
             key={l.to}
             to={l.to}
             end={l.end}
-            onClick={onClose}
+            onClick={(e) => {
+              onProtectedClick?.(e, l.to)
+              // only close if navigation wasn't intercepted
+              if (user || !l.protected) onClose()
+            }}
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium no-underline transition-colors ${
                 isActive
@@ -40,22 +40,35 @@ export default function MobileMenu({ navLinks, onClose }) {
               }`
             }
           >
-            <span>{l.icon}</span>
+            <span aria-hidden="true">{l.icon}</span>
             <span>{l.label}</span>
+            {l.protected && !user && (
+              <span className="ml-auto text-[10px] text-gray-400 font-semibold">🔒</span>
+            )}
           </NavLink>
         ))}
 
-        {/* Divider */}
         <div className="my-1 border-t border-gray-100" />
 
-        {/* Talk to AI — primary CTA */}
-        <Link
-          to="/chat"
-          onClick={onClose}
-          className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-green-600 to-blue-600 no-underline shadow-sm"
-        >
-          🎙️ {t('nav.talkToAI')}
-        </Link>
+        {/* Talk to AI — only when logged in */}
+        {user ? (
+          <Link
+            to="/chat"
+            onClick={onClose}
+            className="flex items-center justify-center gap-2 px-4 py-3 rounded-full text-sm font-bold text-white bg-gradient-to-r from-green-600 to-blue-600 no-underline shadow-sm"
+          >
+            <span aria-hidden="true">🎙️</span>
+            {t('nav.talkToAI')}
+          </Link>
+        ) : (
+          <Link
+            to="/auth"
+            onClick={onClose}
+            className="flex items-center justify-center gap-2 px-4 py-3 rounded-full text-sm font-bold text-white bg-gradient-to-r from-green-600 to-blue-600 no-underline shadow-sm"
+          >
+            🔒 Login to use AI features
+          </Link>
+        )}
 
         {/* Auth section */}
         {user ? (
@@ -80,7 +93,7 @@ export default function MobileMenu({ navLinks, onClose }) {
           <Link
             to="/auth"
             onClick={onClose}
-            className="flex items-center justify-center px-4 py-3 rounded-xl text-sm font-semibold text-green-700 border-2 border-green-500 hover:bg-green-50 no-underline transition-colors"
+            className="flex items-center justify-center px-4 py-3 rounded-full text-sm font-semibold text-green-700 border-2 border-green-500 hover:bg-green-50 no-underline transition-colors"
           >
             Login / Sign Up
           </Link>
@@ -100,11 +113,13 @@ export default function MobileMenu({ navLinks, onClose }) {
                     : 'border-gray-200 bg-white text-gray-600 hover:border-green-300'
                 }`}
               >
-                {opt.flag} {opt.label}
+                <span aria-hidden="true">{opt.flag}</span>
+                {opt.label}
               </button>
             ))}
           </div>
         </div>
+
       </div>
     </div>
   )
