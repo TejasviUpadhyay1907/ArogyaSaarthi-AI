@@ -11,6 +11,7 @@ import {
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore'
 import { auth, db } from '../firebase'
 import { useAuth } from '../context/AuthContext'
+import { useLang } from '../i18n/LangContext'
 
 // ── dev logger ────────────────────────────────────────────────────────────────
 const isDev = import.meta.env.DEV
@@ -19,7 +20,20 @@ const log = (...a) => { if (isDev) console.log('[Auth]', ...a) }
 // ── constants ─────────────────────────────────────────────────────────────────
 const RESEND_COOLDOWN = 60
 
-const FIREBASE_ERRORS = {
+const FIREBASE_ERROR_KEYS = {
+  'auth/email-already-in-use': 'auth/email-already-in-use',
+  'auth/invalid-email':        'auth/invalid-email',
+  'auth/weak-password':        'auth/weak-password',
+  'auth/user-not-found':       'auth/user-not-found',
+  'auth/wrong-password':       'auth/wrong-password',
+  'auth/invalid-credential':   'auth/invalid-credential',
+  'auth/too-many-requests':    'auth/too-many-requests',
+  'auth/network-request-failed': 'auth/network-request-failed',
+  'auth/user-disabled':        'auth/user-disabled',
+}
+
+// Firebase errors are mapped to translation keys in the component via t()
+const FIREBASE_ERRORS_EN = {
   'auth/email-already-in-use': 'This email is already registered. Try logging in.',
   'auth/invalid-email':        'Invalid email address.',
   'auth/weak-password':        'Password must be at least 6 characters.',
@@ -30,7 +44,7 @@ const FIREBASE_ERRORS = {
   'auth/network-request-failed': 'Network error. Check your connection.',
   'auth/user-disabled':        'This account has been disabled.',
 }
-const friendlyError = (e) => FIREBASE_ERRORS[e?.code] || e?.message || 'Something went wrong.'
+const friendlyError = (e) => FIREBASE_ERRORS_EN[e?.code] || e?.message || 'Something went wrong.'
 
 // ── cooldown hook ─────────────────────────────────────────────────────────────
 function useCooldown(seconds) {
@@ -130,6 +144,7 @@ export default function AuthPage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { user, setProfile } = useAuth()
+  const { t } = useLang()
 
   const [tab, setTab]           = useState('login')
   const [email, setEmail]       = useState('')
@@ -154,17 +169,17 @@ export default function AuthPage() {
   useEffect(() => {
     if (searchParams.get('unverified')) {
       setTab('login')
-      setError('Please verify your email before accessing the app.')
+      setError(t('auth.errorUnverifiedRedirect'))
       if (auth.currentUser && !auth.currentUser.emailVerified) {
         setUnverifiedUser(auth.currentUser)
       }
     }
-  }, [searchParams])
+  }, [searchParams, t])
 
   const clear = () => { setError(''); setInfo('') }
 
-  const switchTab = (t) => {
-    setTab(t); clear()
+  const switchTab = (tab) => {
+    setTab(tab); clear()
     setUnverifiedUser(null)
     setPassword(''); setConfirmPw(''); setName('')
   }
@@ -181,9 +196,9 @@ export default function AuthPage() {
   // ── SIGNUP ────────────────────────────────────────────────────────────────
   const handleSignup = async (e) => {
     e.preventDefault(); clear()
-    if (!name.trim())          return setError('Please enter your full name.')
-    if (password !== confirmPw) return setError('Passwords do not match.')
-    if (password.length < 6)   return setError('Password must be at least 6 characters.')
+    if (!name.trim())          return setError(t('auth.errorNameRequired'))
+    if (password !== confirmPw) return setError(t('auth.errorPasswordMismatch'))
+    if (password.length < 6)   return setError(t('auth.errorPasswordShort'))
     setLoading(true)
     try {
       const cred = await createUserWithEmailAndPassword(auth, email.trim(), password)
@@ -199,7 +214,7 @@ export default function AuthPage() {
         createdAt: serverTimestamp(),
       })
       startResendCooldown()
-      setInfo(`Verification email sent to ${email.trim()}. Please verify before logging in.`)
+      setInfo(t('auth.infoVerificationSent').replace('{email}', email.trim()))
       setTab('login')
       setPassword(''); setConfirmPw(''); setName('')
     } catch (err) {
@@ -220,7 +235,7 @@ export default function AuthPage() {
       log('Login, emailVerified:', cred.user.emailVerified)
       if (!cred.user.emailVerified) {
         setUnverifiedUser(cred.user)
-        setError('Email not verified. Check your inbox and click the verification link.')
+        setError(friendlyError({ code: 'auth/email-not-verified' }) || 'Email not verified. Check your inbox and click the verification link.')
         setLoading(false)
         return
       }
@@ -238,13 +253,13 @@ export default function AuthPage() {
   const handleResend = async () => {
     if (resendCooldown > 0) return
     const target = unverifiedUser || auth.currentUser
-    if (!target) return setError('Please log in first, then resend.')
+    if (!target) return setError(t('auth.errorLoginFirst'))
     setLoading(true); clear()
     try {
       await sendEmailVerification(target)
       log('Verification resent to:', target.email)
       startResendCooldown()
-      setInfo(`Verification email sent to ${target.email}. Check your inbox and spam folder.`)
+      setInfo(t('auth.infoResent').replace('{email}', target.email))
     } catch (err) {
       log('Resend error:', err.code, err.message)
       setError(friendlyError(err))
@@ -256,7 +271,7 @@ export default function AuthPage() {
   // ── "I VERIFIED" ──────────────────────────────────────────────────────────
   const handleCheckVerified = async () => {
     const target = unverifiedUser || auth.currentUser
-    if (!target) return setError('Please log in first.')
+    if (!target) return setError(t('auth.errorLoginFirstCheck'))
     setCheckingVerified(true); clear()
     try {
       await reload(target)
@@ -265,7 +280,7 @@ export default function AuthPage() {
         await saveProfile(target.uid, { lastLoginAt: serverTimestamp() })
         navigate('/dashboard', { replace: true })
       } else {
-        setError('Email not verified yet. Click the link in your inbox, then try again.')
+        setError(t('auth.errorNotVerifiedYet'))
       }
     } catch (err) {
       log('Reload error:', err.code, err.message)
@@ -277,12 +292,12 @@ export default function AuthPage() {
 
   // ── FORGOT PASSWORD ───────────────────────────────────────────────────────
   const handleForgotPassword = async () => {
-    if (!email.trim()) return setError('Enter your email address above first.')
+    if (!email.trim()) return setError(t('auth.errorEnterEmail'))
     setLoading(true); clear()
     try {
       await sendPasswordResetEmail(auth, email.trim())
       log('Password reset sent to:', email.trim())
-      setInfo('Password reset link sent. Check your inbox.')
+      setInfo(t('auth.infoResetSent'))
     } catch (err) {
       setError(friendlyError(err))
     } finally {
@@ -297,24 +312,24 @@ export default function AuthPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="text-4xl mb-3">🏥</div>
-          <h1 className="text-2xl font-bold text-gray-800">ArogyaSaarthi AI</h1>
-          <p className="text-sm text-gray-500 mt-1">Your AI Health Navigator</p>
+          <h1 className="text-2xl font-bold text-gray-800">{t('auth.title')}</h1>
+          <p className="text-sm text-gray-500 mt-1">{t('auth.subtitle')}</p>
         </div>
 
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
 
           {/* Tabs */}
           <div className="flex border-b border-gray-100">
-            {['login', 'signup'].map(t => (
+            {['login', 'signup'].map(tabKey => (
               <button
-                key={t} onClick={() => switchTab(t)}
+                key={tabKey} onClick={() => switchTab(tabKey)}
                 className={`flex-1 py-4 text-sm font-semibold transition-colors border-none cursor-pointer ${
-                  tab === t
+                  tab === tabKey
                     ? 'text-green-700 bg-green-50 border-b-2 border-green-500'
                     : 'text-gray-500 bg-white hover:bg-gray-50'
                 }`}
               >
-                {t === 'login' ? 'Login' : 'Sign Up'}
+                {tabKey === 'login' ? t('auth.tabLogin') : t('auth.tabSignup')}
               </button>
             ))}
           </div>
@@ -340,9 +355,9 @@ export default function AuthPage() {
             {/* Unverified inline actions */}
             {unverifiedUser && (
               <div className="p-3 rounded-xl bg-blue-50 border border-blue-200 space-y-2">
-                <p className="text-sm font-semibold text-blue-800">📧 Email not verified</p>
+                <p className="text-sm font-semibold text-blue-800">{t('auth.unverifiedTitle')}</p>
                 <p className="text-xs text-blue-700">
-                  Check <strong>{unverifiedUser.email}</strong> — also check your spam folder.
+                  {t('auth.unverifiedHint').replace('{email}', unverifiedUser.email)}
                 </p>
                 <div className="flex gap-2 flex-wrap pt-1">
                   <button
@@ -350,14 +365,16 @@ export default function AuthPage() {
                     disabled={loading || resendCooldown > 0}
                     className="text-xs font-bold px-3 py-1.5 rounded-full bg-blue-600 text-white disabled:opacity-50 border-none cursor-pointer hover:bg-blue-700 transition-colors"
                   >
-                    {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend email'}
+                    {resendCooldown > 0
+                      ? t('auth.btnResendIn').replace('{sec}', resendCooldown)
+                      : t('auth.btnResendEmail')}
                   </button>
                   <button
                     onClick={handleCheckVerified}
                     disabled={checkingVerified || loading}
                     className="text-xs font-bold px-3 py-1.5 rounded-full bg-green-600 text-white disabled:opacity-50 border-none cursor-pointer hover:bg-green-700 transition-colors"
                   >
-                    {checkingVerified ? 'Checking…' : 'I verified ✓'}
+                    {checkingVerified ? t('auth.btnChecking') : t('auth.btnIVerified')}
                   </button>
                 </div>
               </div>
@@ -367,22 +384,22 @@ export default function AuthPage() {
             {tab === 'login' && (
               <form onSubmit={handleLogin} className="space-y-4">
                 <Field
-                  label="Email" type="email" value={email}
+                  label={t('auth.labelEmail')} type="email" value={email}
                   onChange={v => { setEmail(v); setUnverifiedUser(null) }}
-                  placeholder="you@example.com" autoComplete="email" disabled={loading}
+                  placeholder={t('auth.placeholderEmail')} autoComplete="email" disabled={loading}
                 />
                 <PasswordField
-                  label="Password" value={password}
-                  onChange={setPassword} placeholder="Your password"
+                  label={t('auth.labelPassword')} value={password}
+                  onChange={setPassword} placeholder={t('auth.placeholderPassword')}
                   autoComplete="current-password" disabled={loading}
                 />
-                <SubmitBtn loading={loading} label="Login →" loadingLabel="Signing in…" />
+                <SubmitBtn loading={loading} label={t('auth.btnLogin')} loadingLabel={t('auth.btnLoginLoading')} />
                 <div className="flex justify-between text-xs pt-1">
                   <button
                     type="button" onClick={handleForgotPassword} disabled={loading}
                     className="text-blue-600 hover:underline bg-transparent border-none cursor-pointer p-0 disabled:opacity-50"
                   >
-                    Forgot password?
+                    {t('auth.btnForgotPassword')}
                   </button>
                   {!unverifiedUser && (
                     <button
@@ -390,7 +407,9 @@ export default function AuthPage() {
                       disabled={loading || resendCooldown > 0}
                       className="text-gray-500 hover:underline bg-transparent border-none cursor-pointer p-0 disabled:opacity-50"
                     >
-                      {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend verification'}
+                      {resendCooldown > 0
+                        ? t('auth.btnResendIn').replace('{sec}', resendCooldown)
+                        : t('auth.btnResendVerification')}
                     </button>
                   )}
                 </div>
@@ -401,40 +420,40 @@ export default function AuthPage() {
             {tab === 'signup' && (
               <form onSubmit={handleSignup} className="space-y-4">
                 <Field
-                  label="Full Name" value={name} onChange={setName}
-                  placeholder="Your full name" autoComplete="name" disabled={loading}
+                  label={t('auth.labelFullName')} value={name} onChange={setName}
+                  placeholder={t('auth.placeholderFullName')} autoComplete="name" disabled={loading}
                 />
                 <Field
-                  label="Email" type="email" value={email} onChange={setEmail}
-                  placeholder="you@example.com" autoComplete="email" disabled={loading}
+                  label={t('auth.labelEmail')} type="email" value={email} onChange={setEmail}
+                  placeholder={t('auth.placeholderEmail')} autoComplete="email" disabled={loading}
                 />
                 <PasswordField
-                  label="Password" value={password} onChange={setPassword}
-                  placeholder="Min 6 characters" autoComplete="new-password" disabled={loading}
+                  label={t('auth.labelPassword')} value={password} onChange={setPassword}
+                  placeholder={t('auth.placeholderNewPassword')} autoComplete="new-password" disabled={loading}
                 />
                 <PasswordField
-                  label="Confirm Password" value={confirmPw} onChange={setConfirmPw}
-                  placeholder="Repeat password" autoComplete="new-password" disabled={loading}
+                  label={t('auth.labelConfirmPassword')} value={confirmPw} onChange={setConfirmPw}
+                  placeholder={t('auth.placeholderRepeatPassword')} autoComplete="new-password" disabled={loading}
                 />
-                <SubmitBtn loading={loading} label="Create Account →" loadingLabel="Creating account…" />
+                <SubmitBtn loading={loading} label={t('auth.btnSignup')} loadingLabel={t('auth.btnSignupLoading')} />
               </form>
             )}
 
             {/* Switch tab */}
             <p className="text-center text-xs text-gray-400 pt-2">
-              {tab === 'login' ? "Don't have an account? " : 'Already have an account? '}
+              {tab === 'login' ? t('auth.switchToSignup') : t('auth.switchToLogin')}{' '}
               <button
                 onClick={() => switchTab(tab === 'login' ? 'signup' : 'login')}
                 className="text-green-600 font-semibold hover:underline bg-transparent border-none cursor-pointer p-0"
               >
-                {tab === 'login' ? 'Sign up' : 'Login'}
+                {tab === 'login' ? t('auth.switchSignupLink') : t('auth.switchLoginLink')}
               </button>
             </p>
           </div>
         </div>
 
         <p className="text-center text-xs text-gray-400 mt-6">
-          🔒 Secured by Firebase · No health data stored
+          {t('auth.securedBy')}
         </p>
       </div>
     </div>

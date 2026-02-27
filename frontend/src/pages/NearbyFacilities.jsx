@@ -208,7 +208,7 @@ export default function NearbyFacilities() {
             <div className="text-2xl mb-2">⚠️</div>
             <div className="text-sm font-semibold text-red-700">{error}</div>
             <a href="tel:104" className="mt-3 inline-block text-xs font-bold text-white bg-red-500 px-4 py-2 rounded-full hover:bg-red-600 transition-colors no-underline">
-              📞 Call 104 Helpline
+              {t('nearby.callHelpline')}
             </a>
           </div>
         )}
@@ -235,7 +235,7 @@ export default function NearbyFacilities() {
                 <div className="text-3xl mb-3">🗺️</div>
                 <div className="text-sm font-semibold text-amber-800">{result.message || t('nearby.noResults')}</div>
                 <a href="tel:104" className="mt-4 inline-block text-xs font-bold text-white bg-amber-500 px-4 py-2 rounded-full hover:bg-amber-600 transition-colors no-underline">
-                  📞 Call 104 Helpline
+                  {t('nearby.callHelpline')}
                 </a>
               </div>
             )}
@@ -247,7 +247,7 @@ export default function NearbyFacilities() {
                   <FacilityCard key={f.id} facility={f} t={t} />
                 ))}
                 <p className="text-center text-xs text-gray-400 pt-2">
-                  Data from OpenStreetMap contributors · Distances are approximate
+                  {t('nearby.osmAttribution')}
                 </p>
               </div>
             )}

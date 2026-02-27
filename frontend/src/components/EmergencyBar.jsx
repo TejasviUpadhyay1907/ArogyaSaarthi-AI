@@ -45,7 +45,7 @@ export default function EmergencyBar() {
         <div className="sm:hidden py-1.5">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 min-w-0">
-              <span className="text-xs font-semibold whitespace-nowrap">🚨 Emergency:</span>
+              <span className="text-xs font-semibold whitespace-nowrap">🚨 {t('emergency.question')}</span>
               <a href="tel:108" className="bg-white/20 hover:bg-white/35 text-white text-xs font-bold px-2.5 py-0.5 rounded-full no-underline">108</a>
               <a href="tel:104" className="bg-white/20 hover:bg-white/35 text-white text-xs font-bold px-2.5 py-0.5 rounded-full no-underline">104</a>
             </div>
