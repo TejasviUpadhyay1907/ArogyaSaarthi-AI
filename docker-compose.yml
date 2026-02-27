@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - AI_ENGINE_URL=http://ai_engine:8000
+      - DATABASE_FILE=./db/arogya.db
+      - NODE_ENV=development
+    depends_on:
+      - ai_engine
+
+  ai_engine:
+    build: ./ai_engine
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - USE_LLM=false
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:4000
+    depends_on:
+      - backend

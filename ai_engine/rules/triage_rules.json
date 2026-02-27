@@ -1,0 +1,169 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-02-27",
+  "redFlagRules": [
+    {
+      "id": "RF-001",
+      "name": "Chest pain with breathlessness",
+      "conditions": { "symptoms": ["chest_pain", "breathlessness"], "operator": "AND" },
+      "output": { "urgency": "HIGH", "careLevel": "EMERGENCY" }
+    },
+    {
+      "id": "RF-002",
+      "name": "Difficulty breathing alone",
+      "conditions": { "symptoms": ["breathlessness"], "operator": "ANY" },
+      "output": { "urgency": "HIGH", "careLevel": "EMERGENCY" }
+    },
+    {
+      "id": "RF-003",
+      "name": "Loss of consciousness",
+      "conditions": { "symptoms": ["unconscious"], "operator": "ANY" },
+      "output": { "urgency": "HIGH", "careLevel": "EMERGENCY" }
+    },
+    {
+      "id": "RF-004",
+      "name": "Seizures",
+      "conditions": { "symptoms": ["seizure"], "operator": "ANY" },
+      "output": { "urgency": "HIGH", "careLevel": "EMERGENCY" }
+    },
+    {
+      "id": "RF-005",
+      "name": "Severe bleeding",
+      "conditions": { "symptoms": ["severe_bleeding"], "operator": "ANY" },
+      "output": { "urgency": "HIGH", "careLevel": "EMERGENCY" }
+    },
+    {
+      "id": "RF-006",
+      "name": "Stroke signs",
+      "conditions": { "symptoms": ["stroke_signs"], "operator": "ANY" },
+      "output": { "urgency": "HIGH", "careLevel": "EMERGENCY" }
+    },
+    {
+      "id": "RF-007",
+      "name": "Severe abdominal pain",
+      "conditions": { "symptoms": ["severe_abdominal_pain"], "operator": "ANY" },
+      "output": { "urgency": "HIGH", "careLevel": "EMERGENCY" }
+    },
+    {
+      "id": "RF-008",
+      "name": "Snake bite",
+      "conditions": { "symptoms": ["snake_bite"], "operator": "ANY" },
+      "output": { "urgency": "HIGH", "careLevel": "EMERGENCY" }
+    },
+    {
+      "id": "RF-009",
+      "name": "Poisoning",
+      "conditions": { "symptoms": ["poisoning"], "operator": "ANY" },
+      "output": { "urgency": "HIGH", "careLevel": "EMERGENCY" }
+    },
+    {
+      "id": "RF-010",
+      "name": "Chest pain alone",
+      "conditions": { "symptoms": ["chest_pain"], "operator": "ANY" },
+      "output": { "urgency": "HIGH", "careLevel": "EMERGENCY" }
+    },
+    {
+      "id": "RF-011",
+      "name": "High fever with stiff neck",
+      "conditions": { "symptoms": ["fever", "stiff_neck"], "operator": "AND" },
+      "output": { "urgency": "HIGH", "careLevel": "EMERGENCY" }
+    },
+    {
+      "id": "RF-012",
+      "name": "Pregnancy danger signs",
+      "conditions": { "symptoms": ["pregnancy_danger"], "operator": "ANY" },
+      "output": { "urgency": "HIGH", "careLevel": "EMERGENCY" }
+    }
+  ],
+  "generalRules": [
+    {
+      "id": "GEN-001",
+      "name": "Fever >= 2 days",
+      "conditions": { "symptoms": ["fever"], "durationDaysGte": 2 },
+      "output": { "urgency": "MEDIUM", "careLevel": "PHC" }
+    },
+    {
+      "id": "GEN-002",
+      "name": "Fever with cough",
+      "conditions": { "symptoms": ["fever", "cough"], "operator": "AND" },
+      "output": { "urgency": "MEDIUM", "careLevel": "PHC" }
+    },
+    {
+      "id": "GEN-003",
+      "name": "Vomiting/diarrhea with dehydration",
+      "conditions": { "symptoms": ["vomiting", "diarrhea"], "operator": "ANY", "severityGte": "moderate" },
+      "output": { "urgency": "MEDIUM", "careLevel": "PHC" }
+    },
+    {
+      "id": "GEN-004",
+      "name": "Vomiting/diarrhea > 1 day",
+      "conditions": { "symptoms": ["vomiting", "diarrhea"], "operator": "ANY", "durationDaysGte": 1 },
+      "output": { "urgency": "MEDIUM", "careLevel": "PHC" }
+    },
+    {
+      "id": "GEN-005",
+      "name": "Persistent cough > 14 days",
+      "conditions": { "symptoms": ["cough"], "durationDaysGte": 14 },
+      "output": { "urgency": "MEDIUM", "careLevel": "PHC" }
+    },
+    {
+      "id": "GEN-006",
+      "name": "Headache severe",
+      "conditions": { "symptoms": ["headache"], "severityGte": "severe" },
+      "output": { "urgency": "MEDIUM", "careLevel": "CHC" }
+    },
+    {
+      "id": "GEN-007",
+      "name": "Fever with headache",
+      "conditions": { "symptoms": ["fever", "headache"], "operator": "AND" },
+      "output": { "urgency": "MEDIUM", "careLevel": "PHC" }
+    },
+    {
+      "id": "GEN-008",
+      "name": "Stomach pain moderate+",
+      "conditions": { "symptoms": ["stomach_pain"], "severityGte": "moderate" },
+      "output": { "urgency": "MEDIUM", "careLevel": "PHC" }
+    },
+    {
+      "id": "GEN-009",
+      "name": "Body ache with fever",
+      "conditions": { "symptoms": ["body_ache", "fever"], "operator": "AND" },
+      "output": { "urgency": "MEDIUM", "careLevel": "PHC" }
+    },
+    {
+      "id": "GEN-010",
+      "name": "Mild cold/cough < 2 days",
+      "conditions": { "symptoms": ["cough", "cold"], "operator": "ANY", "durationDaysLt": 2, "severityLte": "mild" },
+      "output": { "urgency": "LOW", "careLevel": "HOME" }
+    },
+    {
+      "id": "GEN-011",
+      "name": "Mild fever < 2 days",
+      "conditions": { "symptoms": ["fever"], "durationDaysLt": 2, "severityLte": "mild" },
+      "output": { "urgency": "LOW", "careLevel": "HOME" }
+    },
+    {
+      "id": "GEN-012",
+      "name": "Body ache alone mild",
+      "conditions": { "symptoms": ["body_ache"], "severityLte": "mild" },
+      "output": { "urgency": "LOW", "careLevel": "HOME" }
+    },
+    {
+      "id": "GEN-013",
+      "name": "Headache mild",
+      "conditions": { "symptoms": ["headache"], "severityLte": "mild" },
+      "output": { "urgency": "LOW", "careLevel": "HOME" }
+    },
+    {
+      "id": "GEN-014",
+      "name": "Mild stomach discomfort",
+      "conditions": { "symptoms": ["stomach_pain"], "severityLte": "mild" },
+      "output": { "urgency": "LOW", "careLevel": "HOME" }
+    }
+  ],
+  "defaultRule": {
+    "id": "DEFAULT",
+    "name": "Unknown/uncertain - conservative",
+    "output": { "urgency": "MEDIUM", "careLevel": "PHC" }
+  }
+}

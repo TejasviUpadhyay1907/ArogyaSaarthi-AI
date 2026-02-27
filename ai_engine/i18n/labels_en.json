@@ -1,0 +1,44 @@
+{
+  "disclaimer": "This is not a medical diagnosis. For emergencies, call 108 immediately.",
+  "urgency_labels": {
+    "HIGH": "HIGH URGENCY",
+    "MEDIUM": "MEDIUM URGENCY",
+    "LOW": "LOW URGENCY"
+  },
+  "care_labels": {
+    "HOME": "Home Care",
+    "PHC": "Primary Health Centre (PHC)",
+    "CHC": "Community Health Centre (CHC)",
+    "DISTRICT_HOSPITAL": "District Hospital",
+    "EMERGENCY": "Emergency — Call 108"
+  },
+  "badge_colors": {
+    "HIGH": "RED",
+    "MEDIUM": "YELLOW",
+    "LOW": "GREEN"
+  },
+  "templates": {
+    "HIGH_EMERGENCY": "Your symptoms suggest a potentially serious condition. Please call 108 or go to the nearest emergency facility immediately. Do not delay seeking care.",
+    "HIGH_DISTRICT": "Your symptoms need urgent attention. Please visit the nearest District Hospital as soon as possible. If condition worsens, call 108.",
+    "MEDIUM_PHC": "Your symptoms need medical attention. Please visit your nearest Primary Health Centre (PHC) within 24 hours. Rest and stay hydrated meanwhile.",
+    "MEDIUM_CHC": "Your symptoms need a specialist evaluation. Please visit a Community Health Centre (CHC) within 24 hours.",
+    "LOW_HOME": "Your symptoms appear mild. Rest, stay hydrated, and monitor your condition. Visit a PHC if symptoms worsen or persist beyond 2-3 days.",
+    "DEFAULT": "We recommend visiting your nearest PHC for a proper evaluation. Stay hydrated and rest."
+  },
+  "clarifying_questions": {
+    "duration": "How many days have you had these symptoms?",
+    "severity": "How severe are your symptoms — mild, moderate, or severe?",
+    "associated": "Do you have any other symptoms like fever, cough, or body ache?"
+  },
+  "chat_welcome": "Hello! I am ArogyaSaarthi AI. Please describe your symptoms and I will help guide you to the right care.",
+  "chat_followup": "Thank you for sharing. Based on what you described:",
+  "actions": {
+    "CALL_108": "Call 108 Ambulance",
+    "VISIT_EMERGENCY": "Go to Emergency",
+    "VISIT_HOSPITAL": "Visit District Hospital",
+    "VISIT_PHC": "Visit PHC within 24h",
+    "VISIT_CHC": "Visit CHC",
+    "HOME_CARE": "Home care & monitor",
+    "BOOK_APPOINTMENT": "Book Appointment"
+  }
+}

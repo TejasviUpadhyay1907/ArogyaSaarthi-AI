@@ -1,0 +1,323 @@
+{
+  "lang": "en",
+  "nav": {
+    "home": "Home",
+    "chat": "AI Assistant",
+    "symptoms": "Symptom Checker",
+    "appointment": "Book Appointment",
+    "talkToAI": "Talk to AI",
+    "tagline": "AI Health Navigator"
+  },
+  "emergency": {
+    "question": "Medical Emergency?",
+    "ambulance": "108 Ambulance",
+    "helpline": "104 Helpline",
+    "warning": "Do not use this app for emergencies"
+  },
+  "home": {
+    "badge": "AI-Powered · Safe · Free",
+    "h1a": "Your Digital",
+    "h1b": "Health Companion",
+    "subtitle": "Speak your symptoms in your language. Our AI understands and safely guides you to the right care — home, PHC, CHC, or emergency. No diagnosis. No prescriptions. Just clear, safe guidance.",
+    "ctaPrimary": "Talk to AI",
+    "ctaSecondary": "Check Symptoms",
+    "stat1": "Rule-Based Safety",
+    "stat2": "Languages",
+    "stat3": "Triage Rules",
+    "stat4": "PII Stored",
+    "featuresLabel": "What We Do",
+    "featuresTitle": "Healthcare Navigation",
+    "featuresTitleSpan": "Made Simple",
+    "featuresSub": "Designed for rural India, elderly users, and anyone who needs clear health guidance in their own language.",
+    "features": [
+      { "title": "Voice-First in Hindi", "desc": "Speak symptoms naturally in Hindi or English. No typing needed. Works on any basic smartphone." },
+      { "title": "Rules Decide, Not AI", "desc": "Urgency is always determined by transparent, auditable rules — never by AI guesswork. Safe by design." },
+      { "title": "Right Care, Right Place", "desc": "Get guided to Home Care, PHC, CHC, District Hospital, or Emergency — exactly where you need to go." },
+      { "title": "Works Offline Too", "desc": "No LLM? No problem. Keyword-based fallback ensures you always get a response, even on 2G." },
+      { "title": "Zero PII Stored", "desc": "No names, no phone numbers, no health records. Fully compliant with India's DPDP Act 2023." },
+      { "title": "Transparent Metrics", "desc": "Live session metrics show urgency distribution and AI usage — full transparency for health admins." }
+    ],
+    "howLabel": "How It Works",
+    "howTitle": "4 Simple",
+    "howTitleSpan": "Steps",
+    "howSub": "From speaking your symptoms to getting clear guidance — in under 30 seconds.",
+    "steps": [
+      { "title": "Choose Language", "desc": "Select from 5 Indian languages. More coming soon." },
+      { "title": "Speak or Type", "desc": "Tap the mic and describe your symptoms naturally. Or type if you prefer." },
+      { "title": "AI Understands", "desc": "Our AI extracts key symptoms. Deterministic rules classify urgency — always safe." },
+      { "title": "Get Clear Guidance", "desc": "See your urgency level and exactly which facility to visit. Share the summary with your doctor." }
+    ],
+    "ctaTitle": "Not Sure About Your Symptoms?",
+    "ctaSub": "Let ArogyaSaarthi AI help you understand what to do next. Free, safe, and available 24/7.",
+    "ctaBtn1": "Talk to AI Now",
+    "ctaBtn2": "Symptom Checker",
+    "demoOnline": "Online",
+    "demoAIMsg": "Describe your symptoms in any language — by voice or text. 🙏",
+    "demoUserMsg": "I have chest pain and difficulty breathing",
+    "demoUrgency": "HIGH URGENCY",
+    "demoCall": "Emergency — Call 108 immediately",
+    "demoFacility": "Proceed to District Hospital"
+  },
+  "chat": {
+    "anonymous": "Anonymous · No PII stored",
+    "aiBusy": "AI is busy – showing basic guidance.",
+    "welcome1": "🙏 **Namaste!** I am ArogyaSaarthi AI.\n\nDescribe your symptoms in any language — by voice or text.\n\n_I will help guide you to the right care._",
+    "welcome2": "Try: **\"I have had fever for 2 days and difficulty breathing\"**\nor tap the mic 🎙️ to speak.",
+    "placeholder": "Type symptoms or tap mic to speak...",
+    "listening": "Listening...",
+    "notForEmergency": "Not for emergencies — Call",
+    "forEmergencies": "for life-threatening situations",
+    "you": "You",
+    "disclaimer": "This is not a diagnosis. Call 108 for emergencies.",
+    "errorMsg": "Sorry, I could not connect to the server. Please try again or call **104** for the medical helpline.",
+    "voiceNotSupported": "Voice input requires Chrome browser.",
+    "urgency": {
+      "HIGH": "HIGH URGENCY",
+      "MEDIUM": "MEDIUM URGENCY",
+      "LOW": "LOW URGENCY"
+    },
+    "sendAriaLabel": "Send message",
+    "micStart": "Start voice input",
+    "micStop": "Stop recording",
+    "analysisComplete": "Analysis complete.",
+    "done": "Done."
+  },
+  "checker": {
+    "label": "Step-by-Step Triage",
+    "title": "Symptom",
+    "titleSpan": "Checker",
+    "sub": "Answer a few simple questions to get your triage guidance.",
+    "stepOf": "Step {step} of {total}",
+    "complete": "complete",
+    "back": "← Back",
+    "next": "Next →",
+    "getGuidance": "Get Guidance ✓",
+    "talkToAI": "Talk to AI for Details",
+    "startOver": "Start Over",
+    "disclaimer": "This is not a medical diagnosis. Call 108 for emergencies.",
+    "patient": {
+      "myself": "Myself",
+      "child": "Child",
+      "elderly": "Elderly",
+      "pregnant": "Pregnant"
+    },
+    "sym": {
+      "fever": "Fever",
+      "cough": "Cough",
+      "cold": "Cold",
+      "headache": "Headache",
+      "stomach_pain": "Stomach pain",
+      "chest_pain": "Chest pain",
+      "breathlessness": "Breathlessness",
+      "vomiting": "Vomiting",
+      "diarrhea": "Loose motion",
+      "body_ache": "Body ache",
+      "weakness": "Weakness",
+      "rash": "Rash"
+    },
+    "dur": {
+      "today": "Today",
+      "1_2days": "1–2 days",
+      "3_7days": "3–7 days",
+      "week_plus": ">1 week"
+    },
+    "sev": {
+      "mild": "Mild",
+      "moderate": "Moderate",
+      "severe": "Severe"
+    },
+    "steps": [
+      {
+        "title": "Who needs help?", "emoji": "👤", "sub": "Select who the symptoms are for.",
+        "options": [
+          { "v": "myself", "icon": "🧑", "label": "Myself" },
+          { "v": "child", "icon": "👶", "label": "Child" },
+          { "v": "elderly", "icon": "👴", "label": "Elderly" },
+          { "v": "pregnant", "icon": "🤰", "label": "Pregnant" }
+        ]
+      },
+      {
+        "title": "Main symptom?", "emoji": "🩺", "sub": "What is the primary complaint?",
+        "options": [
+          { "v": "fever", "icon": "🌡️", "label": "Fever" },
+          { "v": "chest_pain", "icon": "💔", "label": "Chest Pain" },
+          { "v": "breathing", "icon": "😮‍💨", "label": "Breathing Difficulty" },
+          { "v": "headache", "icon": "🤕", "label": "Headache" },
+          { "v": "stomach", "icon": "🤢", "label": "Stomach Pain" },
+          { "v": "cough", "icon": "😷", "label": "Cough / Cold" },
+          { "v": "bleeding", "icon": "🩸", "label": "Bleeding" },
+          { "v": "other", "icon": "❓", "label": "Other" }
+        ]
+      },
+      {
+        "title": "How long?", "emoji": "⏱️", "sub": "How long have you had this symptom?",
+        "options": [
+          { "v": "today", "icon": "📅", "label": "Today only" },
+          { "v": "1-2days", "icon": "📆", "label": "1–2 Days" },
+          { "v": "3-7days", "icon": "🗓️", "label": "3–7 Days" },
+          { "v": "week+", "icon": "📊", "label": "More than a week" }
+        ]
+      },
+      {
+        "title": "How severe?", "emoji": "📊", "sub": "How would you describe the severity?",
+        "options": [
+          { "v": "mild", "icon": "😊", "label": "Mild — manageable" },
+          { "v": "moderate", "icon": "😐", "label": "Moderate — uncomfortable" },
+          { "v": "severe", "icon": "😣", "label": "Severe — very painful" },
+          { "v": "critical", "icon": "🚨", "label": "Critical — can't function" }
+        ]
+      }
+    ],
+    "results": {
+      "HIGH": { "urgency": "HIGH URGENCY", "facility": "Emergency — Call 108 / District Hospital", "explanation": "Your symptoms suggest a potentially serious condition. Please call 108 or go to the nearest District Hospital immediately." },
+      "MEDIUM": { "urgency": "MEDIUM URGENCY", "facility": "Visit PHC within 24 hours", "explanation": "Your symptoms need medical attention. Please visit your nearest Primary Health Centre (PHC) within 24 hours." },
+      "LOW": { "urgency": "LOW URGENCY", "facility": "Home Care — Rest and monitor", "explanation": "Your symptoms appear mild. Rest, stay hydrated, and monitor. Visit PHC if symptoms worsen or persist beyond 2–3 days." }
+    }
+  },
+  "appointment": {
+    "label": "PHC Doctors",
+    "title": "Book an",
+    "titleSpan": "Appointment",
+    "sub": "Select a doctor and choose your preferred time slot.",
+    "availableSlots": "Available Slots",
+    "confirmTitle": "Confirm Booking",
+    "confirmAt": "at",
+    "confirmBtn": "✅ Confirm Appointment",
+    "confirmedTitle": "Appointment Confirmed!",
+    "confirmedSub": "Your appointment has been booked successfully.",
+    "timeSlot": "Time Slot",
+    "date": "Date",
+    "tomorrow": "Tomorrow",
+    "ashaNote": "A confirmation will be shared with your ASHA worker. Please carry a valid ID.",
+    "bookAnother": "Book Another",
+    "yearsExp": "{years} yrs exp",
+    "ratingLabel": "Rating",
+    "doctors": [
+      { "name": "Dr. Rajesh Kumar",  "spec": "General Physician",  "rating": "4.8", "years": 12 },
+      { "name": "Dr. Priya Sharma",  "spec": "Pediatrician",        "rating": "4.9", "years": 8  },
+      { "name": "Dr. Amit Verma",    "spec": "Internal Medicine",   "rating": "4.7", "years": 15 },
+      { "name": "Dr. Sunita Patel",  "spec": "Gynaecologist",       "rating": "4.9", "years": 10 }
+    ]
+  },
+  "urgency": {
+    "HIGH": "🚨 HIGH URGENCY",
+    "MEDIUM": "⚠️ MEDIUM URGENCY",
+    "LOW": "✅ LOW URGENCY"
+  },
+  "careLevel": {
+    "HOME": "Home Care",
+    "PHC": "PHC",
+    "CHC": "CHC",
+    "DISTRICT_HOSPITAL": "District Hospital",
+    "EMERGENCY": "Emergency"
+  },
+  "timeToAct": {
+    "NOW": "NOW — immediately",
+    "WITHIN_24_HOURS": "Within 24 hours",
+    "MONITOR_48_HOURS": "Monitor for 48 hours"
+  },
+  "card": {
+    "whyTitle": "Why this recommendation?",
+    "watchFor": "Watch for:",
+    "nearbyFacilities": "📍 Nearby Facilities",
+    "availableDoctors": "👨‍⚕️ Available Doctors",
+    "availableSlots": "🗓️ Available Slots",
+    "viewSlots": "View Slots",
+    "viewDoctorsBook": "View Doctors & Book Appointment",
+    "appointmentConfirmed": "✅ Appointment Confirmed",
+    "doctor": "Doctor",
+    "specialization": "Specialization",
+    "date": "Date",
+    "bookingId": "Booking ID",
+    "homeTipsTitle": "🏠 Home Care Tips",
+    "callEmergency": "📞 Call 108",
+    "yrsExp": "yrs exp",
+    "km": "km"
+  },
+  "sc": {
+    "whoFor": "Who is this for?",
+    "ageGroup": "Age group",
+    "trimester": "Trimester (optional)",
+    "searchPlaceholder": "Search symptoms...",
+    "voiceInput": "Voice input",
+    "duration": "Duration",
+    "severity": "Severity",
+    "whyLabel": "Why",
+    "watchForLabel": "Watch for",
+    "findFacility": "📍 Find nearest facility",
+    "locationPlaceholder": "Enter area or pincode...",
+    "searchBtn": "Search",
+    "findingFacilities": "Finding facilities...",
+    "analyzingSymptoms": "Analyzing your symptoms...",
+    "aiTailoring": "🤖 AI is tailoring questions based on your symptoms...",
+    "aiGenerated": "AI-generated questions based on your symptoms",
+    "confidenceHigh": "🟢 High confidence",
+    "confidenceMedium": "🟡 Medium confidence",
+    "confidenceLow": "🔴 Low confidence",
+    "stepTitles": ["Context", "Symptoms", "Follow-up", "Result"],
+    "stepOf": "Step {step} of {total}",
+    "complete": "complete",
+    "talkToAI": "🎙️ Talk to AI Assistant",
+    "startOver": "🔄 Start Over",
+    "getGuidance": "🔍 Get AI Guidance",
+    "next": "Next →",
+    "back": "← Back",
+    "noSymptoms": "Please select at least one symptom.",
+    "yes": "✅ Yes",
+    "no": "❌ No"
+  },
+  "action": {
+    "CALL_108": "Call 108",
+    "FIND_FACILITY": "Find nearest facility",
+    "BOOK_APPOINTMENT": "Book Appointment",
+    "HOME_TIPS": "Home care tips",
+    "ASK_LOCATION": "Share location",
+    "SHOW_DOCTORS": "View doctors",
+    "SHOW_SLOTS": "View slots"
+  },
+  "nearby": {
+    "navLabel": "Nearby Facilities",
+    "badge": "Live Map Data · OpenStreetMap",
+    "title": "Nearby Healthcare",
+    "titleSpan": "Facilities",
+    "sub": "Enter any Indian pincode to find hospitals, clinics and doctors within 8 km.",
+    "inputPlaceholder": "Enter 6-digit pincode (e.g. 411001)",
+    "searchBtn": "Search",
+    "searching": "Searching...",
+    "resultsFor": "Results for",
+    "facilitiesFound": "facilities found",
+    "noResults": "No nearby facilities found in map data. Try a nearby major area or call 104.",
+    "invalidPin": "Please enter a valid 6-digit Indian pincode.",
+    "errorGeneric": "Could not fetch facility data right now. Please try again or call 104.",
+    "km": "km away",
+    "openMaps": "Open in Maps",
+    "callNow": "Call",
+    "hours": "Hours",
+    "emergency": "Emergency",
+    "types": {
+      "hospital": "Hospital",
+      "clinic": "Clinic",
+      "doctor": "Doctor",
+      "pharmacy": "Pharmacy",
+      "health": "Health Centre",
+      "centre": "Health Centre"
+    },
+    "tryPincodes": "Try: 110001 (Delhi) · 400001 (Mumbai) · 600001 (Chennai) · 500001 (Hyderabad)"
+  },
+  "footer": {
+    "disclaimer": "ArogyaSaarthi AI is NOT a medical diagnosis tool. It does not replace professional medical advice. Always consult a qualified doctor. In emergencies, call 108 immediately.",
+    "navigate": "Navigate",
+    "emergency": "Emergency Numbers",
+    "emergencyLinks": [
+      { "href": "tel:108", "label": "🚑 108 — Ambulance" },
+      { "href": "tel:104", "label": "🏥 104 — Medical Helpline" },
+      { "href": "tel:181", "label": "👩 181 — Women Helpline" },
+      { "href": "tel:102", "label": "🤱 102 — Maternity" }
+    ],
+    "tagline": "Built for India. Designed for Bharat. 🇮🇳",
+    "desc": "Voice-first healthcare navigation for rural India. Built with safety, transparency, and accessibility at the core.",
+    "copyright": "© 2026 ArogyaSaarthi AI · AMD Slingshot Hackathon",
+    "legal": "Not a medical device · Not telemedicine · DPDP Act 2023 Compliant",
+    "notDevice": "Not a medical device. Call 108 for emergencies."
+  }
+}
