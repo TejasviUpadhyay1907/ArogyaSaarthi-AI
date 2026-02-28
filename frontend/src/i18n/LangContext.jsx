@@ -17,17 +17,22 @@ export function LangProvider({ children }) {
   const [lang, setLangState] = useState(() => localStorage.getItem('lang') || 'en')
 
   const setLang = useCallback((l) => {
+    console.log('[LangContext] setLang called:', l)
     localStorage.setItem('lang', l)
     setLangState(l)
   }, [])
 
-  const t = useCallback((key) => {
+  // Don't memoize t - create a new function every render
+  // This ensures components always get fresh translations
+  const t = (key) => {
     const translations = LANGS[lang] || LANGS.en
     const val = getNestedValue(translations, key)
     if (val !== null) return val
     // fallback to English
     return getNestedValue(LANGS.en, key) ?? key
-  }, [lang])
+  }
+
+  console.log('[LangContext] Render - Current language:', lang)
 
   return (
     <LangContext.Provider value={{ lang, setLang, t }}>

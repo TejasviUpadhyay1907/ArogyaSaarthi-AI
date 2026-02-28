@@ -179,8 +179,32 @@ function buildFacilityReply(facilities, facilityType, location, language) {
 
 // POST /api/chat
 router.post('/', async (req, res) => {
+  try {
+    await handleChat(req, res);
+  } catch (err) {
+    console.error('[Chat] Unhandled route error:', err.message);
+    // Never return 500 — always return a safe structured response
+    const { localFallbackTriage } = require('../ai_bridge');
+    const language = req.body?.language || 'en';
+    const message = req.body?.message || req.body?.text || '';
+    const fallback = localFallbackTriage(message, language);
+    res.json({
+      scope: fallback.scope || 'MEDICAL',
+      intent: fallback.intent || 'CLARIFICATION_REQUIRED',
+      reply: fallback.reply || 'Please describe your symptoms.',
+      triageCard: fallback.triageCard || null,
+      facilities: [],
+      booking: null,
+      sessionId: req.body?.sessionId || null,
+      meta: { llmUsed: false, fallbackUsed: true, latencyMs: 0 },
+    });
+  }
+});
+
+async function handleChat(req, res) {
   const start = Date.now();
-  const { sessionId, message, language = 'en', source = 'text' } = req.body;
+  const { sessionId, message: _msg, text: _text, language = 'en', source = 'text' } = req.body;
+  const message = _msg || _text; // Accept both "message" and "text" for compatibility
 
   if (!message) return res.status(400).json({ error: 'message is required' });
 
@@ -548,7 +572,7 @@ router.post('/', async (req, res) => {
       meta: { llmUsed: false, fallbackUsed: true, latencyMs: ms },
     });
   }
-});
+}
 
 // ── Helpers ───────────────────────────────────────────────────────────────
 

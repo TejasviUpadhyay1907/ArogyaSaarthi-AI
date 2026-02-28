@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { sendChat, executeAction } from '../services/api'
+import { sendChat, executeAction, AuthError, NetworkError } from '../services/api'
 import Logo from '../components/Logo'
 import { useLang } from '../i18n/LangContext'
 
@@ -64,8 +64,15 @@ export default function Chat() {
       const isFacility = data.intent === 'REFINE_LOCATION' || data.intent === 'FACILITY_SEARCH' || data.intent === 'LOCATION_PROVIDED'
       const resultData = isTriage ? data : (isFacility && data.facilities?.length ? data : null)
       addMsg('ai', bubbleText, resultData)
-    } catch {
-      addMsg('ai', t('chat.errorMsg'))
+    } catch (err) {
+      if (err instanceof AuthError) {
+        addMsg('ai', t('chat.authError') || 'Please log in to use the AI assistant. Your session may have expired.')
+      } else if (err instanceof NetworkError) {
+        addMsg('ai', t('chat.networkError') || 'Network issue — please check your connection and try again.')
+      } else {
+        addMsg('ai', t('chat.errorMsg'))
+      }
+      console.warn('[Chat] sendMessage error:', err.name, err.message)
     }
     setLoading(false)
   }

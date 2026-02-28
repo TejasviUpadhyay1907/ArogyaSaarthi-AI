@@ -8,8 +8,8 @@ export default function Dashboard() {
   const { user, profile, logout } = useAuth()
   const { t } = useLang()
 
-  const displayName = profile?.name || user?.displayName || 'User'
-  const role        = profile?.role || 'Patient'
+  const displayName = profile?.name || user?.displayName || t('nav.user')
+  const role        = profile?.role || t('nav.patient')
   const phone       = profile?.phone
   const email       = profile?.email || user?.email
 

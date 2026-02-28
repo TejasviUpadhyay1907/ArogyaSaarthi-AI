@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s — %(message)s")
 logger = logging.getLogger(__name__)
 
 from nlp_extractor import extract_symptoms
@@ -20,6 +21,7 @@ from intent_gate import (
     classify_intent, classify_intent_with_gemini,
     get_small_talk_reply, get_clarification_reply,
 )
+from triage_engine import run_triage
 
 app = FastAPI(title="ArogyaSaarthi AI Engine", version="2.0.0")
 
@@ -59,6 +61,11 @@ class IntentRequest(BaseModel):
     language: str = "en"
 
 
+class TriageRequest(BaseModel):
+    text: str
+    language: str = "en"
+
+
 @app.get("/health")
 def health():
     return {
@@ -68,6 +75,23 @@ def health():
         "gemini_ready": gemini_enabled(),
         "model": os.getenv("MODEL_NAME", "gemini-2.5-flash"),
     }
+
+
+@app.post("/triage")
+def triage_endpoint(req: TriageRequest):
+    """
+    Unified triage endpoint.
+    Returns structured JSON: symptom_summary, urgency_level, urgency_reason,
+    recommended_next_steps, warning_signs, clarifying_question, disclaimer.
+    Always returns a safe response — never crashes, never hallucinates facilities.
+    """
+    result = run_triage(req.text.strip(), req.language)
+    # Strip internal meta from response, expose only request_id
+    meta = result.pop("_meta", {})
+    result["request_id"] = meta.get("request_id", "")
+    result["fallback_used"] = meta.get("fallback_used", False)
+    result["from_cache"] = meta.get("from_cache", False)
+    return result
 
 
 @app.post("/intent")
@@ -261,6 +285,10 @@ STRICT RULES:
 
 User message: {text}
 Answer in {language_name}:"""
+
+LANGUAGE_NAMES = {
+    "en": "English", "hi": "Hindi", "mr": "Marathi", "ta": "Tamil", "te": "Telugu"
+}
 
 
 @app.post("/general-answer")

@@ -191,6 +191,15 @@ function validateResponse(result, language = 'en') {
 }
 
 async function callAIEngine(text, language, source) {
+  try {
+    return await _callAIEngineInternal(text, language, source);
+  } catch (err) {
+    console.error('[callAIEngine] Unhandled error, using local fallback:', err.message);
+    return localFallbackTriage(text, language);
+  }
+}
+
+async function _callAIEngineInternal(text, language, source) {
   // ── Step -1: Scope classifier ──────────────────────────────────────
   const { scope, llmUsed: scopeLlmUsed } = await classifyScope(text, language);
 
@@ -373,20 +382,40 @@ function buildTriageCard(urgency, careLevel, timeToAct, topReasons, watchFor, la
   };
 }
 
-async function fetchJSON(url, body) {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 30000); // 30s for Gemini calls
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-      signal: controller.signal,
-    });
-    if (!res.ok) throw new Error(`AI engine returned ${res.status}`);
-    return await res.json();
-  } finally {
-    clearTimeout(timeout);
+async function fetchJSON(url, body, retries = 1) {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000); // 30s for Gemini calls
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: controller.signal,
+      });
+      if (!res.ok) {
+        const status = res.status;
+        // Retry on 5xx, throw on 4xx
+        if (status >= 500 && attempt < retries) {
+          console.warn(`[fetchJSON] ${url} returned ${status}, retrying (${attempt + 1}/${retries})...`);
+          clearTimeout(timeout);
+          await new Promise(r => setTimeout(r, 500));
+          continue;
+        }
+        throw new Error(`AI engine returned ${status}`);
+      }
+      return await res.json();
+    } catch (err) {
+      clearTimeout(timeout);
+      if (err.name === 'AbortError' && attempt < retries) {
+        console.warn(`[fetchJSON] ${url} timed out, retrying (${attempt + 1}/${retries})...`);
+        await new Promise(r => setTimeout(r, 300));
+        continue;
+      }
+      throw err;
+    } finally {
+      clearTimeout(timeout);
+    }
   }
 }
 

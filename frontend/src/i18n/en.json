@@ -6,7 +6,20 @@
     "symptoms": "Symptom Checker",
     "appointment": "Book Appointment",
     "talkToAI": "Talk to AI",
-    "tagline": "AI Health Navigator"
+    "tagline": "AI Health Navigator",
+    "login": "Login",
+    "loginSignUp": "Login / Sign Up",
+    "loginToContinue": "Please login to continue",
+    "loginToUseAI": "Login to use AI features",
+    "signOut": "Sign Out",
+    "language": "Language",
+    "patient": "Patient",
+    "user": "User",
+    "userMenu": "User menu",
+    "selectLanguage": "Select language",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "navigationMenu": "Navigation menu"
   },
   "emergency": {
     "question": "Medical Emergency?",
@@ -70,6 +83,8 @@
     "you": "You",
     "disclaimer": "This is not a diagnosis. Call 108 for emergencies.",
     "errorMsg": "Sorry, I could not connect to the server. Please try again or call **104** for the medical helpline.",
+    "authError": "Please log in to use the AI assistant. Your session may have expired.",
+    "networkError": "Network issue — please check your connection and try again.",
     "voiceNotSupported": "Voice input requires Chrome browser.",
     "urgency": {
       "HIGH": "HIGH URGENCY",
